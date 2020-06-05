@@ -12,7 +12,7 @@ io.on('connection', (client) => {
         client.join(user.room);
         users.addPerson(client.id, user.name, user.room);
         client.broadcast.to(user.room).emit('in', {
-            user: 'ADMIN', 
+            user: 'ADMIN',
             message: `${user.name} has joined the chat.`,
             data: users.getPeoplebyRoom(user.room)
         })
