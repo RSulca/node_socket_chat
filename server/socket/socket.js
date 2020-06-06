@@ -14,18 +14,20 @@ io.on('connection', (client) => {
         client.broadcast.to(user.room).emit('in', {
             user: 'ADMIN',
             message: `${user.name} has joined the chat.`,
-            data: users.getPeoplebyRoom(user.room)
+            data: users.getPeoplebyRoom(user.room),
+            date: new Date().getTime()
         })
         call(users.getPeoplebyRoom(user.room))
     })
 
-    client.on('send', (data) => {
+    client.on('send', (data, call) => {
         let person = users.getPerson(client.id);
         client.broadcast.to(person.room).emit('send', {
             user: person.name,
             message: data.message,
             date: new Date().getTime()
         })
+        call(data)
     })
 
     client.on('sendPrivate', (data) => {
@@ -42,7 +44,8 @@ io.on('connection', (client) => {
         client.broadcast.to(userLeft.room).emit('out', {
             user: 'ADMIN',
             message: `${userLeft.name} has left the chat.`,
-            data: users.getPeoplebyRoom(userLeft.room)
+            data: users.getPeoplebyRoom(userLeft.room),
+            date: new Date().getTime()
         })
     })
 

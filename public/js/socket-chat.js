@@ -15,20 +15,29 @@ var user = {
 socket.on('connect', function () {
     console.log('Server connected');
     socket.emit('enterChat', user, function(resp){
-        console.log(resp);
+        renderUsers(resp);
+        // console.log(resp);
     })
 })
 
 socket.on('out', (data)=>{
-    console.log('Server',data);
+    renderUsers(data.data);
+    renderMessage(data, false, false);
+    // console.log('Server',data);
 })
 
 socket.on('in', (data)=>{
-    console.log('Server',data);
+    renderUsers(data.data);
+    renderMessage(data, false,true);
+    // console.log('Server',data);
 })
 
 socket.on('send', (data)=>{
     console.log(data);
+    renderMessage(data, false);
+    scrollBottom();
+    var audio = new Audio('../assets/audio/tono.mp3');
+    audio.play();
 })
 
 socket.on('sendPrivate', (data)=>{
